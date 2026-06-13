@@ -1,0 +1,6 @@
+Factor,Test Type,P-Value,Result,Business Impact
+Age,T-Test,1.24e-186,Significant,Age 44+ customers high risk
+Balance,T-Test,1.27e-32,Significant,High balance customers leaving
+Credit Score,T-Test,0.0067,Weak,Not a strong factor
+Gender,Chi-Square,2.24e-26,Significant,Female churn 25% vs Male 16%
+Country,Chi-Square,3.83e-66,Significant,Germany churn 32% vs others 16%

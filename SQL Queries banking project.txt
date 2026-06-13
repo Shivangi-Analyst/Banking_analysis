@@ -1,0 +1,98 @@
+BANK CUSTOMER CHURN ANALYSIS 
+SQL QUERIES
+
+USE banking_analytics;
+
+Query 1: Total Churn Rate
+SELECT 
+    COUNT(*) AS total_customers,
+    SUM(churn) AS churned_customers,
+    ROUND(SUM(churn) * 100.0 / COUNT(*), 2) AS churn_rate_percent
+FROM churn_data;
+
+ Query 2: Country Wise Churn
+SELECT 
+    country,
+    COUNT(*) AS total_customers,
+    SUM(churn) AS churned,
+    ROUND(SUM(churn) * 100.0 / COUNT(*), 2) AS churn_rate_percent
+FROM churn_data
+GROUP BY country
+ORDER BY churn_rate_percent DESC;
+
+Query 3: Age Group Analysis
+SELECT 
+    CASE 
+        WHEN age < 30 THEN 'Young (< 30)'
+        WHEN age BETWEEN 30 AND 40 THEN 'Middle (30-40)'
+        WHEN age BETWEEN 41 AND 50 THEN 'Senior (41-50)'
+        ELSE 'Old (50+)'
+    END AS age_group,
+    COUNT(*) AS total_customers,
+    SUM(churn) AS churned,
+    ROUND(SUM(churn) * 100.0 / COUNT(*), 2) AS churn_rate_percent
+FROM churn_data
+GROUP BY age_group
+ORDER BY churn_rate_percent DESC;
+
+ Query 4: Balance Segments
+SELECT 
+    CASE 
+        WHEN balance = 0 THEN 'Zero Balance'
+        WHEN balance < 50000 THEN 'Low (< 50K)'
+        WHEN balance BETWEEN 50000 AND 100000 THEN 'Medium (50K-100K)'
+        ELSE 'High (> 100K)'
+    END AS balance_segment,
+    COUNT(*) AS total_customers,
+    SUM(churn) AS churned,
+    ROUND(SUM(churn) * 100.0 / COUNT(*), 2) AS churn_rate_percent
+FROM churn_data
+GROUP BY balance_segment
+ORDER BY churn_rate_percent DESC;
+
+Query 5: Active vs Inactive
+SELECT 
+    active_member,
+    COUNT(*) AS total_customers,
+    SUM(churn) AS churned,
+    ROUND(SUM(churn) * 100.0 / COUNT(*), 2) AS churn_rate_percent
+FROM churn_data
+GROUP BY active_member;
+
+Query 6: Gender Wise Churn
+SELECT 
+    gender,
+    COUNT(*) AS total_customers,
+    SUM(churn) AS churned,
+    ROUND(SUM(churn) * 100.0 / COUNT(*), 2) AS churn_rate_percent
+FROM churn_data
+GROUP BY gender
+ORDER BY churn_rate_percent DESC;
+
+Query 7: Products Analysis
+SELECT 
+    products_number,
+    COUNT(*) AS total_customers,
+    SUM(churn) AS churned,
+    ROUND(SUM(churn) * 100.0 / COUNT(*), 2) AS churn_rate_percent
+FROM churn_data
+GROUP BY products_number
+ORDER BY products_number;
+
+ Query 8: High Risk Customers
+SELECT 
+    customer_id,
+    age,
+    country,
+    gender,
+    balance,
+    products_number,
+    active_member
+FROM churn_data
+WHERE 
+    churn = 0
+    AND age > 40
+    AND balance > 80000
+    AND active_member = 0
+ORDER BY balance DESC
+LIMIT 20;
